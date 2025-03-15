@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # Use neovim for vim if present.
 [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
@@ -15,11 +15,10 @@ for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
 done; unset command
 
 se() {
-	local -r bindir=~sc/
-	s=("${bindir}"**/*(.))
-	# shellcheck disable=SC2086
-	c="$(print -lnr ${s/$bindir/} | fzf)"
-	[[ "${c}" ]] && "${EDITOR}" "$bindir$c"
+	f=("${HOME}/.local/bin/"**/*(.))
+	n=("${f[@]:t:r}")
+	c="$(print -lnr "${n[@]}" | fzf)"
+	[[ "${c}" ]] && "${EDITOR}" "${f[${n[(i)${c}]}]}"
 }
 
 # Verbosity and settings that you pretty much just always are going to want.
